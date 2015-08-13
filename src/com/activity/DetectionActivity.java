@@ -57,7 +57,7 @@ public class DetectionActivity extends Activity {
 	private boolean isServiceReg = false; // mServiceConnection是否已绑定
 	private static boolean receiverReleased = false; // mGattUpdateReceiver是否已释放注册
 	private boolean supportBLE;
-	private boolean isNeedToScan=true;
+	private boolean isNeedToScan = true;
 
 	private double receivedWaterData = 0.0;
 
@@ -95,14 +95,9 @@ public class DetectionActivity extends Activity {
 				break;
 			case FIND_DIVECS:
 				adapter.notifyDataSetChanged();
-				if(isNeedToScan)
-				scanLeDevice(true);
+				if (isNeedToScan)
+					scanLeDevice(true);
 				break;
-//			case 0:
-//				devicesNames.clear();
-//				adapter.notifyDataSetChanged();
-//				scanLeDevice(true);
-//				handler.sendEmptyMessageDelayed(0, 5000);
 			}
 		}
 	};
@@ -277,7 +272,7 @@ public class DetectionActivity extends Activity {
 		}
 
 	}
-	
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d("ActivityLifeText", "onCreate");
@@ -332,20 +327,20 @@ public class DetectionActivity extends Activity {
 		readyTextView = (TextView) this.findViewById(R.id.ready);
 		waterValue = (TextView) this.findViewById(R.id.watervalue);
 		lvdevices = (ListView) this.findViewById(R.id.device_show_name);
-		Button refresh=(Button) findViewById(R.id.refresh); 
+		Button refresh = (Button) findViewById(R.id.refresh);
 		refresh.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				devicesNames.clear();
 				adapter.notifyDataSetChanged();
-				if(mConnected)
-				mBluetoothLeService.disconnect();
+				if (mConnected)
+					mBluetoothLeService.disconnect();
 				mConnected = false;
-					mScanning = true;
-					isNeedToScan=true; 
-					Message message = new Message();
-					message.what = DEVICE_DIS_CONNECT;
-					handler.sendMessage(message);
+				mScanning = true;
+				isNeedToScan = true;
+				Message message = new Message();
+				message.what = DEVICE_DIS_CONNECT;
+				handler.sendMessage(message);
 			}
 		});
 		adapter = new ArrayAdapter<String>(this,
@@ -360,29 +355,30 @@ public class DetectionActivity extends Activity {
 						devicesNames.get(position), Toast.LENGTH_SHORT).show();
 				mBluetoothAdapter.stopLeScan(mLeScanCallback);
 				mScanning = false;
-				isNeedToScan=false;
-				mDeviceAddress=devicesAddress.get(position);
-				if(!mConnected)
-				mBluetoothLeService.connect(mDeviceAddress);
-//				begainBindService();
+				isNeedToScan = false;
+				mDeviceAddress = devicesAddress.get(position);
+				if (!mConnected)
+					mBluetoothLeService.connect(mDeviceAddress);
+				// begainBindService();
 			}
 		});
-//		handler.sendEmptyMessageDelayed(0, 1000);
+		// handler.sendEmptyMessageDelayed(0, 1000);
 	}
 
 	public void setmDeviceAddress(String address) {
 		mDeviceAddress = address;
 	}
+
 	/**
 	 * 绑定服务的方法
 	 */
-	public void begainBindService(){
-		Intent gattServiceIntent = new Intent(
-				DetectionActivity.this,
+	public void begainBindService() {
+		Intent gattServiceIntent = new Intent(DetectionActivity.this,
 				BluetoothLeService.class);
 		bindService(gattServiceIntent, mServiceConnection,
 				DetectionActivity.BIND_AUTO_CREATE);
 	}
+
 	private boolean mConnected = false;
 	private boolean mScanning = false;
 
@@ -418,19 +414,19 @@ public class DetectionActivity extends Activity {
 							devicesNames.add(device.getName());
 							devicesAddress.add(device.getAddress());
 						}
-						Message message=new Message();
-						message.what=FIND_DIVECS;
+						Message message = new Message();
+						message.what = FIND_DIVECS;
 						mBluetoothAdapter.stopLeScan(mLeScanCallback);
-						handler.sendMessage(message); 
-//						if (device != null && device.getName() != null
-//								&& device.getName().equals("MyService")) {
-//							if (mScanning) {
-//								mBluetoothAdapter.stopLeScan(mLeScanCallback);
-//								mScanning = false;
-//							}
-//							setmDeviceAddress(device.getAddress());
-//							begainBindService();
-//						}
+						handler.sendMessage(message);
+						// if (device != null && device.getName() != null
+						// && device.getName().equals("MyService")) {
+						// if (mScanning) {
+						// mBluetoothAdapter.stopLeScan(mLeScanCallback);
+						// mScanning = false;
+						// }
+						// setmDeviceAddress(device.getAddress());
+						// begainBindService();
+						// }
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -439,7 +435,7 @@ public class DetectionActivity extends Activity {
 			};
 			rn.run();
 		}
-	
+
 	};
 
 	// Code to manage Service lifecycle.
@@ -457,7 +453,7 @@ public class DetectionActivity extends Activity {
 				System.out.println("Unable to initialize Bluetooth");
 				finish();
 			}
-			//mBluetoothLeService.connect(mDeviceAddress);
+			// mBluetoothLeService.connect(mDeviceAddress);
 			isServiceReg = true;
 		}
 
@@ -481,12 +477,12 @@ public class DetectionActivity extends Activity {
 			Toast.makeText(DetectionActivity.this, R.string.ble_not_supported,
 					Toast.LENGTH_SHORT).show();
 			return;
-		}else if(requestCode == REQUEST_ENABLE_BT_CLICK
-				&& resultCode == Activity.RESULT_OK){
+		} else if (requestCode == REQUEST_ENABLE_BT_CLICK
+				&& resultCode == Activity.RESULT_OK) {
 			Log.d("ActivityLifeText", "onActivityResult_ResultOK");
 			return;
 		}
-		//super.onActivityResult(requestCode, resultCode, data);
+		// super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
@@ -499,9 +495,9 @@ public class DetectionActivity extends Activity {
 		super.onStop();
 
 		if (supportBLE && !receiverReleased) {
-			if(mConnected)
+			if (mConnected)
 				mBluetoothLeService.disconnect();
-				mConnected = false;
+			mConnected = false;
 			receiverReleased = true;
 			unregisterReceiver(mGattUpdateReceiver);
 		}
@@ -510,7 +506,7 @@ public class DetectionActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		
+
 	}
 
 }
