@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">蓝牙搜索器</string>
+    <string name="ble_detect_timeless">请至少检测5秒！</string>
+    <string name="ble_scan_devices">正在搜索，请打开蓝牙设备！</string>
+    <string name="ble_os_version_low">无法使用检测功能，该功能需要4.3以上安卓系统</string>
+    <string name="ble_device_not_support">您的设备无法使用蓝牙服务</string>
+    <string name="ble_detect_valuelow">所测的值太小，请确保测量部位正确！</string>
+    <string name="ble_detect_step_unstartble">蓝牙未开启</string>
+    <string name="ble_detect_step_search">搜索设备</string>
+    <string name="ble_detect_step_linked">已连接</string>
+    <string name="ble_detect_step_detecting">检测分析中</string>
+    <string name="ble_detect_step_detected">检测结束</string>
+    <string name="ble_detect_step_detecting_error">检测不成功</string>
+    <string name="ble_not_support">蓝牙不支持</string>
+    <string name="ble_not_supported">蓝牙未开启</string>
+    <string name="ble_connect_success">设备连接成功，请开始检测！</string>
+    <string name="error_bluetooth_not_supported">该设备不支持蓝牙4.0</string>
+
+</resources>
